@@ -59,7 +59,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
-		List<File> files = getAllFile(new File("D:\\¡≤¡À≤Œ“≈ ¿\\IT\\Java\\File_creation\\My_file_finder"));
+		List<File> files = getAllFile(new File("D:\\GitHub\\Commit_14\\Java_04"));
 		TreeSet<File> ts = new TreeSet<File>(new Comparator<File>() {
 
 			@Override
