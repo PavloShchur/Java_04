@@ -8,6 +8,8 @@ import java.util.TreeMap;
 
 public class Cinema {
 	private TreeMap<Days, Schedule> map;
+	Schedule newSchedule = new Schedule();
+	
 
 	Time open;
 	Time closed;
@@ -18,26 +20,21 @@ public class Cinema {
 		String name_of_day = Main.scanner.next().toUpperCase();
 		for (Days day : Days.values()) {
 			if (name_of_day.equalsIgnoreCase(day.name())){
-				map.put(day, new Schedule());
+				map.put(day, newSchedule);
 				System.out.println(map);
 			} 
-//			else {
-////				System.out.println("Day is not correct.");
-//			}
 		}
 
 	}
-	
 	public void addSchedule () {
 		System.out.println("Enter day.");
 		String name_of_day = Main.scanner.next().toUpperCase();
-		System.out.println(map);
 		Iterator<Entry<Days, Schedule>> iterator = map.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Map.Entry<Days, Schedule> entry = iterator.next();
 			if (entry.getKey().name().equals(name_of_day)) {
-				System.out.println("QQQQQQQQ");
 				entry.getValue().addSeance();
+				
 			}
 		}
 	}

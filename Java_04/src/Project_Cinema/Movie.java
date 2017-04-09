@@ -3,9 +3,10 @@ package Project_Cinema;
 public class Movie {
 	private String title;
 	private Time Duration;
-	public Movie(String title, Time time) {
+	public Movie(String title, Time Duration) {
 		super();
 		this.title = title;
+		this.Duration = Duration; 
 	}
 	public String getTitle() {
 		return title;
