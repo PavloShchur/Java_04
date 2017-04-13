@@ -8,9 +8,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		Cinema cinema = new Cinema(new Time(06, 30), new Time(20, 00));
-
+		Schedule schedule = new Schedule();
 		boolean work = true;
-
 		while (work) {
 			Menu menu = new Menu();
 			menu.menu();
@@ -27,6 +26,9 @@ public class Main {
 				cinema.show_week_schedule();
 				break;
 			case "4":
+				schedule.deleteSeance();
+				break;
+			case "5":
 				System.exit(0);
 
 			}

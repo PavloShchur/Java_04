@@ -1,6 +1,8 @@
 package Project_Cinema;
 
-public class Seance implements Comparable<Seance> {
+import java.util.Comparator;
+
+public class Seance implements Comparable<Seance>, Comparator<Seance> {
 	private Movie movie;
 	private Time startTime;
 	private Time endTime;
@@ -57,15 +59,71 @@ public void setEndTime(Time endTime) {
 	this.endTime = endTime;
 }
 
-
+@Override
+public int compareTo(Seance o) {
+    if (!(o instanceof Seance))
+        return -1;
+    Seance temp = (Seance) o;
+    int index = this.startTime.compareTo(temp.getStartTime());
+    if (index == 0)
+        index = this.endTime.compareTo(temp.endTime);
+    if (index == 0)
+        index = this.movie.toString().compareToIgnoreCase(temp.getMovie().toString());
+    return index;
+    }
+  
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((endTime == null) ? 0 : endTime.hashCode());
+		result = prime * result + ((movie == null) ? 0 : movie.hashCode());
+		result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
+		return result;
+	}
 
 
 	@Override
-	public int compareTo(Seance o) {
-		if (!this.startTime.equals(startTime)) {
-			return -1;
-		} else
-			return 0;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Seance other = (Seance) obj;
+		if (endTime == null) {
+			if (other.endTime != null)
+				return false;
+		} else if (!endTime.equals(other.endTime))
+			return false;
+		if (movie == null) {
+			if (other.movie != null)
+				return false;
+		} else if (!movie.equals(other.movie))
+			return false;
+		if (startTime == null) {
+			if (other.startTime != null)
+				return false;
+		} else if (!startTime.equals(other.startTime))
+			return false;
+		return true;
 	}
+
+
+	public Seance(Movie movie, Time startTime, Time endTime) {
+		super();
+		this.movie = movie;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
+
+
+	@Override
+	public int compare(Seance o1, Seance o2) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 
 }
