@@ -1,8 +1,6 @@
 package Project_Cinema;
 
-import java.util.Comparator;
-
-public class Seance implements Comparable<Seance>, Comparator<Seance> {
+public class Seance implements Comparable<Seance> {
 	private Movie movie;
 	private Time startTime;
 	private Time endTime;
@@ -118,12 +116,5 @@ public int compareTo(Seance o) {
 		this.endTime = endTime;
 	}
 
-
-	@Override
-	public int compare(Seance o1, Seance o2) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
 
 }

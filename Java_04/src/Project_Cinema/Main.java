@@ -26,7 +26,7 @@ public class Main {
 				cinema.show_week_schedule();
 				break;
 			case "4":
-				schedule.deleteSeance();
+				cinema.deleteSeance();
 				break;
 			case "5":
 				System.exit(0);

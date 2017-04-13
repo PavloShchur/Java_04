@@ -1,5 +1,6 @@
 package Project_Cinema;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -7,22 +8,24 @@ import java.util.Set;
 import java.util.TreeMap;
 
 public class Cinema {
-	private TreeMap<Days, Schedule> map;	
+	private TreeMap<Days, Schedule> map;
+	Schedule schedule = new Schedule();
 	private Time open;
 	private Time closed;
-	private Days days;	
+	private Days days;
 
 	public void addDay() {
 		System.out.println("Enter day.");
 		String name_of_day = Main.scanner.next().toUpperCase();
 		for (Days day : Days.values()) {
-			if (name_of_day.equalsIgnoreCase(day.name())){
+			if (name_of_day.equalsIgnoreCase(day.name())) {
 				map.put(day, new Schedule());
-			} 
+			}
 		}
 
 	}
-	public void addSchedule () {
+
+	public void addSchedule() {
 		System.out.println("Enter day.");
 		String name_of_day = Main.scanner.next().toUpperCase();
 		Iterator<Entry<Days, Schedule>> iterator = map.entrySet().iterator();
@@ -39,45 +42,128 @@ public class Cinema {
 				int hours_begin = Main.scanner.nextInt();
 				System.out.println("Please enter time of begining (minutes).");
 				int minutes_begin = Main.scanner.nextInt();
-				entry.getValue().getSchedule().add(new Seance(new Movie(title, new Time(hours_duration, minutes_duration)),
-						new Time(hours_begin, minutes_begin)));	
+				if (entry.getValue().getSchedule().isEmpty()) {
+					entry.getValue().getSchedule()
+							.add(new Seance(new Movie(title, new Time(hours_duration, minutes_duration)),
+									new Time(hours_begin, minutes_begin)));
+				} else if ((hours_begin >= entry.getValue().getSchedule().iterator().next().getEndTime().getHours()
+						&& minutes_begin > entry.getValue().getSchedule().iterator().next().getEndTime().getMinutes())
+						|| (hours_begin + entry.getValue().getSchedule().iterator().next().getMovie().getDuration()
+								.getHours()) < entry.getValue().getSchedule().iterator().next().getEndTime().getHours()
+								&& (minutes_begin + entry.getValue().getSchedule().iterator().next().getMovie()
+										.getDuration().getMinutes() < entry.getValue().getSchedule().iterator().next()
+												.getEndTime().getMinutes())) {
+					entry.getValue().getSchedule()
+							.add(new Seance(new Movie(title, new Time(hours_duration, minutes_duration)),
+									new Time(hours_begin, minutes_begin)));
+					System.out.println("Wrong time!");
+				} else {
+					System.out.println("Time!");
+				}
+
+			}
+			// schedule.getSchedule().add(new Seance(new Movie(title, new
+			// Time(hours_duration, minutes_duration)),
+			// new Time(hours_begin, minutes_begin)));
+		}
+	}
+
+	public void deleteSeance() {
+		System.out.println("Enter day.");
+		String name_of_day = Main.scanner.next().toUpperCase();
+		Iterator<Entry<Days, Schedule>> iterator = map.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Map.Entry<Days, Schedule> entry = iterator.next();
+			if (entry.getKey().name().equals(name_of_day)) {
+				System.out.println("Please enter title of movie.");
+				String title = Main.scanner.next();
+				// System.out.println("Please enter hours.");
+				// int hours_begin = Main.scanner.nextInt();
+				// System.out.println("Please enter minutes.");
+				// int minutes_duration = Main.scanner.nextInt();
+				Collection<Seance> seances = entry.getValue().getSchedule();
+				Iterator<Seance> iterator2 = seances.iterator();
+				while (iterator2.hasNext()) {
+					Seance seance = iterator2.next();
+					if (seance.getMovie().getTitle().equalsIgnoreCase(title))
+
+					// & seance.getStartTime().equals((hours_begin))
+					// & seance.getStartTime().equals(minutes_duration))
+					{
+						iterator2.remove();
+					}
+
+				}
 			}
 		}
 	}
-//		System.out.println("Enter day.");
-//		String name_of_day = Main.scanner.next().toUpperCase();
-//		Iterator<Entry<Days, Schedule>> iterator = map.entrySet().iterator();
-//		while (iterator.hasNext()) {
-//			Map.Entry<Days, Schedule> entry = iterator.next();
-//			if (entry.getKey().name().equals(name_of_day)) {
-//				entry.getValue().addSeance();	
-//			}
-//		}
-//	}
-//	
-	public void show_week_schedule () {
+
+	public void addSeance() {
+		System.out.println("Please enter title of movie.");
+		String title = Main.scanner.next();
+		System.out.println("Please enter hours.");
+		int hours_duration = Main.scanner.nextInt();
+		System.out.println("Please enter minutes.");
+		int minutes_duration = Main.scanner.nextInt();
+		System.out.println("Please enter time of begining (hour).");
+		int hours_begin = Main.scanner.nextInt();
+		System.out.println("Please enter time of begining (minutes).");
+		int minutes_begin = Main.scanner.nextInt();
+		Iterator<Entry<Days, Schedule>> iterator = map.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Map.Entry<Days, Schedule> entry = iterator.next();
+			if ((hours_begin > entry.getValue().getSchedule().iterator().next().getEndTime().getHours()
+					&& minutes_begin > entry.getValue().getSchedule().iterator().next().getEndTime().getMinutes())
+					|| (hours_begin
+							+ schedule.getSchedule().iterator().next().getMovie().getDuration().getHours()) < entry
+									.getValue().getSchedule().iterator().next().getEndTime().getHours()
+							&& (minutes_begin + schedule.getSchedule().iterator().next().getMovie().getDuration()
+									.getMinutes() < entry.getValue().getSchedule().iterator().next().getEndTime()
+											.getMinutes())) {
+				System.out.println("Wrong time!");
+			} else {
+				System.out.println("Time!");
+				schedule.getSchedule().add(new Seance(new Movie(title, new Time(hours_duration, minutes_duration)),
+						new Time(hours_begin, minutes_begin)));
+			}
+
+		}
+	}
+
+	// System.out.println("Enter day.");
+	// String name_of_day = Main.scanner.next().toUpperCase();
+	// Iterator<Entry<Days, Schedule>> iterator = map.entrySet().iterator();
+	// while (iterator.hasNext()) {
+	// Map.Entry<Days, Schedule> entry = iterator.next();
+	// if (entry.getKey().name().equals(name_of_day)) {
+	// entry.getValue().addSeance();
+	// }
+	// }
+	// }
+	//
+	public void show_week_schedule() {
 		for (Map.Entry<Days, Schedule> entry : map.entrySet()) {
 			System.out.println(entry.toString());
 		}
-	}	
+	}
 
 	public void addMovie(Movie movie, Time time) {
 		if (time.getHours() < open.getHours()
 				|| (time.getHours() + movie.getDuration().getHours()) > closed.getHours()) {
 			System.out.println("Time error.");
 		} else {
-			
+
 		}
 
 	}
 
-	
 	public Cinema(Time open, Time closed) {
 		super();
 		this.map = new TreeMap<Days, Schedule>();
 		this.open = open;
 		this.closed = closed;
 	}
+
 	public Cinema(TreeMap<Days, Schedule> map, Set<Entry<Days, Schedule>> set) {
 		super();
 		this.map = map;
@@ -111,6 +197,7 @@ public class Cinema {
 	public String toString() {
 		return "Cinema [map=" + map + ", open=" + open + ", closed=" + closed + "]";
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -121,6 +208,7 @@ public class Cinema {
 		result = prime * result + ((open == null) ? 0 : open.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -149,6 +237,5 @@ public class Cinema {
 			return false;
 		return true;
 	}
-	
 
 }
