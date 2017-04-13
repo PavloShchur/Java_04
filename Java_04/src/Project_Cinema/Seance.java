@@ -109,12 +109,4 @@ public int compareTo(Seance o) {
 	}
 
 
-	public Seance(Movie movie, Time startTime, Time endTime) {
-		super();
-		this.movie = movie;
-		this.startTime = startTime;
-		this.endTime = endTime;
-	}
-
-
 }

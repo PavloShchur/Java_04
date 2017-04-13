@@ -10,7 +10,7 @@ public class Time implements Comparable<Time> {
 //		} else {
 			this.minutes = minutes;
 //		}
-		if (hours < 0 | hours > 23) {
+		if (hours < 0 || hours > 23) {
 			System.out.println("Wrong hours");
 		} else {
 			this.hours = hours;
@@ -22,7 +22,7 @@ public class Time implements Comparable<Time> {
 	}
 
 	public void setMinutes(int minutes) {
-		if (minutes < 0 | minutes > 59) {
+		if (minutes < 0 || minutes > 59) {
 //			System.out.println("Wrong minutes");
 		} else {
 			this.minutes = minutes;
@@ -34,7 +34,7 @@ public class Time implements Comparable<Time> {
 	}
 
 	public void setHours(int hours) {
-		if (hours < 0 | hours > 23) {
+		if (hours < 0 || hours > 23) {
 			System.out.println("Wrong hours");
 		} else {
 			this.hours = hours;
@@ -60,7 +60,10 @@ public class Time implements Comparable<Time> {
 			return -1;
 		} else if (this.minutes > o.minutes) {
 			return 1;
-		} else {
+		} else if (this.minutes < o.minutes) {
+			return -1;
+		}
+		else {
 			return 0;
 		}
 	}
