@@ -18,9 +18,10 @@ public class Main {
 			switch (choice) {
 			case "1":
 				cinema.addDay();
+				cinema.addSchedule_day();
 				break;
 			case "2":
-				cinema.addSchedule();
+				cinema.addSchedule_all_days();
 				break;
 			case "3":
 				cinema.show_week_schedule();
