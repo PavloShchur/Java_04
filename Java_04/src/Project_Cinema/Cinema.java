@@ -13,20 +13,14 @@ public class Cinema {
 	Schedule schedule = new Schedule();
 	Formatter fmt = new Formatter();
 
-
 	private static final Time open = new Time(6, 0);
 	private static final Time closed = new Time(23, 0);
 
 	public void addDay() {
-		// System.out.println("Enter day.");
-		// String name_of_day = Main.scanner.next().toUpperCase();
 		for (Days day : Days.values()) {
-			// if (name_of_day.equalsIgnoreCase(day.name())) {
-			// map.put(day, new Schedule());
 			map.put(day, new Schedule());
 		}
 	}
-	// }
 
 	public void addSchedule_day() {
 		System.out.println("Enter day.");
@@ -37,10 +31,8 @@ public class Cinema {
 			if (entry.getKey().name().equals(name_of_day)) {
 				System.out.println("Please enter title of movie.");
 				String title = Main.scanner.next();
-				System.out.println("Please enter hours.");
-				int hours_duration = Main.scanner.nextInt();
-				System.out.println("Please enter minutes.");
-				int minutes_duration = Main.scanner.nextInt();
+				int hours_duration = 1 + (int) +(Math.random() * 3);
+				int minutes_duration = (int) +(Math.random() * 60);
 				System.out.println("Please enter time of begining (hour).");
 				int hours_begin = Main.scanner.nextInt();
 				System.out.println("Please enter time of begining (minutes).");
@@ -81,10 +73,8 @@ public class Cinema {
 		Iterator<Entry<Days, Schedule>> iterator = map.entrySet().iterator();
 		System.out.println("Please enter title of movie.");
 		String title = Main.scanner.next();
-		System.out.println("Please enter hours.");
-		int hours_duration = Main.scanner.nextInt();
-		System.out.println("Please enter minutes.");
-		int minutes_duration = Main.scanner.nextInt();
+		int hours_duration = 1 + (int) +(Math.random() * 3);
+		int minutes_duration = (int) +(Math.random() * 60);
 		System.out.println("Please enter time of begining (hour).");
 		int hours_begin = Main.scanner.nextInt();
 		System.out.println("Please enter time of begining (minutes).");
@@ -122,7 +112,7 @@ public class Cinema {
 		}
 	}
 
-	public void deleteSeance() {
+	public void deleteSeance_day() {
 		System.out.println("Enter day.");
 		String name_of_day = Main.scanner.next().toUpperCase();
 		Iterator<Entry<Days, Schedule>> iterator = map.entrySet().iterator();
@@ -142,6 +132,23 @@ public class Cinema {
 					if (seance.getMovie().getTitle().equalsIgnoreCase(title)) {
 						iterator2.remove();
 					}
+				}
+			}
+		}
+	}
+
+	public void deleteSeance_all() {
+		Iterator<Entry<Days, Schedule>> iterator = map.entrySet().iterator();
+		System.out.println("Please enter title of movie.");
+		String title = Main.scanner.next();
+		while (iterator.hasNext()) {
+			Map.Entry<Days, Schedule> entry = iterator.next();
+			Collection<Seance> seances = entry.getValue().getSchedule();
+			Iterator<Seance> iterator2 = seances.iterator();
+			while (iterator2.hasNext()) {
+				Seance seance = iterator2.next();
+				if (seance.getMovie().getTitle().equalsIgnoreCase(title)) {
+					iterator2.remove();
 				}
 			}
 		}
@@ -179,11 +186,26 @@ public class Cinema {
 	}
 
 	public void show_week_schedule() {
+		boolean work = true;
+		String format = "|%1$-7s|%2$-10s|%3$-10s|%4$-12s|\n";
 		for (Map.Entry<Days, Schedule> entry : map.entrySet()) {
-			System.out.println(entry.toString());
+			// System.out.println(entry.toString());
+			if(entry.getValue().getSchedule().isEmpty()){
+			     work = false;
+			    }
+//			while (!entry.getValue().getSchedule().isEmpty()) {
+//				while (work)
+			if (work = true) {
+				System.out.format(format, entry.getValue().getSchedule().iterator().next().getMovie().getTitle(),
+						entry.getValue().getSchedule().iterator().next().getMovie().getDuration().getHours(),
+						entry.getValue().getSchedule().iterator().next().getMovie().getDuration().getHours(),
+						entry.getValue().getSchedule().iterator().next().getStartTime().getHours());
+			}
 			fmt.close();
+			}
 		}
-	}
+//		work = false;
+	
 
 	public void addMovie(Movie movie, Time time) {
 		if (time.getHours() < open.getHours()
