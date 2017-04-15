@@ -1,6 +1,7 @@
 package Project_Cinema;
 
 import java.util.Collection;
+import java.util.Formatter;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -10,6 +11,8 @@ import java.util.TreeMap;
 public class Cinema {
 	private TreeMap<Days, Schedule> map;
 	Schedule schedule = new Schedule();
+	Formatter fmt = new Formatter();
+
 
 	private static final Time open = new Time(6, 0);
 	private static final Time closed = new Time(23, 0);
@@ -178,6 +181,7 @@ public class Cinema {
 	public void show_week_schedule() {
 		for (Map.Entry<Days, Schedule> entry : map.entrySet()) {
 			System.out.println(entry.toString());
+			fmt.close();
 		}
 	}
 
