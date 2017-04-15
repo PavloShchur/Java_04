@@ -24,7 +24,7 @@ public String toString() {
 		    mins = mins - 60;
 		    setEndTime(new Time(hours, mins));
 		   }
-	return "Seance [movie=" + movie + ", startTime=" + startTime + ", endTime=" + endTime + "]";
+	return "Seance [" + movie + ", startTime=" + startTime + ", endTime=" + endTime +  "\n";
 }
 
 
