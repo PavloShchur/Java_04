@@ -7,9 +7,8 @@ public class Player {
 	
 	private String name;
 	private int money;
+	private int score;
 	
-
-
 	public Player(String name, int money) {
 		super();
 		this.name = name;
@@ -32,12 +31,21 @@ public class Player {
 		this.money = money;
 	}
 
+	public int getScore() {
+		return score;
+	}
+	
+	public void setScore(byte score) {
+		this.score = score;
+	}
+
 	@Override
 	public String toString() {
 			Currency c;
 			c = Currency.getInstance(Locale.US);
 	
-		return "Player [name=" + name.substring(0, 1).toUpperCase() + name.substring(1) + ", money=" + money + " " + c.getSymbol() + "]";
+		return "Player [name=" + name.substring(0, 1).toUpperCase() + name.substring(1)
+		+ ", money=" + money + " " + c.getSymbol() + " score=" + score + "]";
 	}
 
 }
