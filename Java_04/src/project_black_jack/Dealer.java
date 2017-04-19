@@ -51,7 +51,8 @@ public class Dealer {
 
 	@Override
 	public String toString() {
-		return "Dealer [name=" + name + ", score=" + score + ", cards=" + dealer_cards + "]" + "\n";
+		return "Dealer [name=" + name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase() + ", score="
+				+ score + ", cards=" + dealer_cards + "]" + "\n";
 	}
 
 }

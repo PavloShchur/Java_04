@@ -1,6 +1,5 @@
 package project_black_jack;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Formatter;
@@ -12,17 +11,27 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-
 public class Casino {
 
-	static final byte max_number_of_players = 4;
+	private int bank = 0;
 
+	public int getBank() {
+		return bank;
+	}
+
+	public void setBank(short i) {
+		this.bank = i;
+	}
+
+	public Casino() {
+		super();
+	}
+
+	static final byte max_number_of_players = 4;
 	static final short starting_price = 100;
 
 	Dealer dealer = new Dealer();
+	Sound sound = new Sound();
 
 	{
 		dealer.cards();
@@ -46,12 +55,21 @@ public class Casino {
 	}
 
 	public void add_cards() {
+
 		System.out.println("Please enter name of player.");
 		String name_of_player = Main.scanner.next();
 		Iterator<Entry<Player, ArrayList<Cards>>> iterator = map_casino.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Map.Entry<Player, ArrayList<Cards>> entry = iterator.next();
 			if (entry.getKey().getName().equalsIgnoreCase(name_of_player)) {
+
+				System.out.println("Enter money" + entry.getKey().getMoney());
+
+				entry.getKey().setMoney(entry.getKey().getMoney() - 500);
+				bank = 500 * map_casino.size();
+				System.out.println(bank + " Bank");
+				System.out.println("Play money" + entry.getKey().getMoney());
+
 				if (entry.getValue().isEmpty()) {
 					int i = 0;
 					while (i < 2) {
@@ -60,9 +78,20 @@ public class Casino {
 						dealer.dealer_cards.remove(choice_01);
 						i++;
 					}
-					short sum = 0;
+					int sum = 0;
 					for (byte j = 0; j < entry.getValue().size(); j++) {
 						sum += entry.getValue().get(j).getValue();
+						if (sum == 21) {
+							System.out.println("YOU ARE WINNER!!!!!!!!");
+							sound.playSound_02();
+							entry.getKey().setScore(sum + bank);
+						}
+
+						if (sum > 21) {
+							System.out.println("You lose.");
+							sound.playSound_01();
+						}
+
 					}
 
 					System.out.println(entry.getKey().getName().substring(0, 1).toUpperCase()
@@ -86,13 +115,13 @@ public class Casino {
 
 						if (sum > 21) {
 							System.out.println("You lose.");
-							playSound();
+							sound.playSound_01();
 							game = false;
 						}
 
 						if (sum == 21) {
 							System.out.println("YOU ARE WINNER!!!!!!!!");
-							playSound_1();
+							sound.playSound_02();
 							entry.getKey().setScore(sum);
 						}
 
@@ -110,14 +139,14 @@ public class Casino {
 						game = false;
 
 					}
-					List<Integer> ints = Stream.of(entry.getKey().getScore()).collect(Collectors.toList());
-					Integer maxIntP = ints.stream().max(Comparator.comparing(i -> i)).get();
-
-					System.out.println("Maximum number in the set is " + maxIntP);
 
 				}
+				List<Integer> ints = Stream.of(entry.getKey().getScore()).collect(Collectors.toList());
+				Integer maxIntP = ints.stream().max(Comparator.comparing(i -> i)).get();
 
+				System.out.println("Maximum number in the set is " + maxIntP);
 			}
+
 		}
 	}
 
@@ -128,20 +157,76 @@ public class Casino {
 		while (iterator.hasNext()) {
 			Map.Entry<Dealer, ArrayList<Cards>> entry = iterator.next();
 			if (entry.getValue().isEmpty()) {
+				bank = 500 * map_casino.size();
+				System.out.println(bank + " Bank");
 				int x = 0;
 				while (x < 2) {
-					System.out.println("sdfgh");
 					int choice_03 = (int) (Math.random() * dealer.dealer_cards.size());
 					entry.getValue().add(dealer.getCards().get(choice_03));
 					x++;
 				}
-				int sum = 0;
-				for (int j = 0; j < entry.getValue().size(); j++) {
+
+				byte sum = 0;
+				for (byte j = 0; j < entry.getValue().size(); j++) {
 					sum += entry.getValue().get(j).getValue();
 					entry.getKey().setScore(sum);
+					if (sum == 21) {
+						System.out.println(entry.getKey().getName() + " ARE WINNER!!!!!!!!");
+						sound.playSound_02();
+						entry.getKey().setScore(sum);
+					}
+
+					if (sum > 21) {
+						System.out.println("You lose.");
+						sound.playSound_01();
+					}
+
 				}
 				System.out.println(entry.getKey().getName().substring(0, 1).toUpperCase()
 						+ entry.getKey().getName().substring(1).toLowerCase() + "'s score is: " + sum);
+			}
+			boolean game = true;
+			while (game) {
+				System.out.println("Do you want to take another card?");
+				String answer = Main.scanner.next();
+
+				if (answer.equalsIgnoreCase("YES")) {
+					byte choice_02 = (byte) (Math.random() * dealer.dealer_cards.size());
+					entry.getValue().add(dealer.getCards().get(choice_02));
+					dealer.dealer_cards.remove(choice_02);
+
+					byte sum = 0;
+					for (byte j = 0; j < entry.getValue().size(); j++) {
+						sum += entry.getValue().get(j).getValue();
+					}
+
+					if (sum > 21) {
+						System.out.println(entry.getKey().getName() + " lose.");
+						sound.playSound_01();
+						game = false;
+					}
+
+					if (sum == 21) {
+						System.out.println(entry.getKey().getName() + " ARE WINNER!!!!!!!!");
+						sound.playSound_02();
+						entry.getKey().setScore(sum + bank);
+					}
+
+					System.out.println(entry.getKey().getName().substring(0, 1).toUpperCase()
+							+ entry.getKey().getName().substring(1).toLowerCase() + "'s score is: " + sum);
+
+				} else if (answer.equalsIgnoreCase("NO")) {
+					byte sum = 0;
+					for (byte j = 0; j < entry.getValue().size(); j++) {
+						sum += entry.getValue().get(j).getValue();
+					}
+					entry.getKey().setScore(sum);
+					System.out.println(entry.getKey().getName() + "'s score is: " + sum);
+
+					game = false;
+
+				}
+
 			}
 
 		}
@@ -151,6 +236,7 @@ public class Casino {
 	public void result() {
 		int max = 0;
 		String player = " ";
+		int exit_money = 0;
 		Iterator<Entry<Player, ArrayList<Cards>>> iterator = map_casino.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Map.Entry<Player, ArrayList<Cards>> entry = iterator.next();
@@ -158,21 +244,13 @@ public class Casino {
 			if (max < entry.getKey().getScore() & entry.getKey().getScore() < 21) {
 				max = entry.getKey().getScore();
 				player = entry.getKey().getName();
+				exit_money = entry.getKey().getMoney() + bank + 500;
 			}
-			
-
-			// List<Integer> ints =
-			// Stream.of(entry.getKey().getScore()).collect(Collectors.toList());
-			// Integer maxIntP = ints.stream().max(Comparator.comparing(i ->
-			// i)).get();
-			//
-			// System.out.println("Maximum number in the set is " + maxIntP);
-
 		}
 		if (max < dealer.getScore()) {
 			System.out.println("Dealer won!");
 		} else {
-			System.out.println(player + " is winner " + max);
+			System.out.println(player + " is winner " + max + " " + exit_money);
 		}
 	}
 
@@ -180,45 +258,6 @@ public class Casino {
 		for (Map.Entry<Player, ArrayList<Cards>> entry : map_casino.entrySet()) {
 			System.out.println(entry);
 			System.out.println(entry.getKey().getName() + " " + entry.getKey().getScore());
-		}
-	}
-
-	public void playSound() {
-		try {
-			AudioInputStream audioInputStream = AudioSystem
-					.getAudioInputStream(new File("D:/MusicPlayer/KissesinParadise.wav").getAbsoluteFile());
-			Clip clip = AudioSystem.getClip();
-			clip.open(audioInputStream);
-			clip.start();
-		} catch (Exception ex) {
-			System.out.println("Error with playing sound.");
-			ex.printStackTrace();
-		}
-	}
-
-	public void playSound_1() {
-		try {
-			AudioInputStream audioInputStream = AudioSystem
-					.getAudioInputStream(new File("D:/MusicPlayer/UpbeatFunk.wav").getAbsoluteFile());
-			Clip clip = AudioSystem.getClip();
-			clip.open(audioInputStream);
-			clip.start();
-		} catch (Exception ex) {
-			System.out.println("Error with playing sound.");
-			ex.printStackTrace();
-		}
-	}
-
-	public void playSound_2() {
-		try {
-			AudioInputStream audioInputStream = AudioSystem
-					.getAudioInputStream(new File("D:/MusicPlayer/UpbeatFunk.wav").getAbsoluteFile());
-			Clip clip = AudioSystem.getClip();
-			clip.open(audioInputStream);
-			clip.start();
-		} catch (Exception ex) {
-			System.out.println("Error with playing sound.");
-			ex.printStackTrace();
 		}
 	}
 

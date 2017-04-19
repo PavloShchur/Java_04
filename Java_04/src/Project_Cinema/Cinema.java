@@ -9,8 +9,11 @@ import java.util.Set;
 import java.util.TreeMap;
 
 public class Cinema {
+
 	private TreeMap<Days, Schedule> map;
 	Schedule schedule = new Schedule();
+	Genre my_genre = new Genre();
+	Sound_cinema sound_cinema = new Sound_cinema();
 	Formatter fmt = new Formatter();
 
 	private static final Time open = new Time(6, 0);
@@ -37,6 +40,7 @@ public class Cinema {
 				int hours_begin = Main.scanner.nextInt();
 				System.out.println("Please enter time of begining (minutes).");
 				int minutes_begin = Main.scanner.nextInt();
+				String genre = my_genre.getGenre();
 				if ((hours_begin * 60 + minutes_begin < open.getHours() * 60 + open.getMinutes())) {
 					System.out.println("Cinema closed at this time");
 				} else if (hours_begin * 60 + minutes_begin >= closed.getHours() * 60 + closed.getMinutes()
@@ -45,8 +49,9 @@ public class Cinema {
 					System.out.println("Cinema closed at this time");
 				} else if (entry.getValue().getSchedule().isEmpty()) {
 					entry.getValue().getSchedule()
-							.add(new Seance(new Movie(title, new Time(hours_duration, minutes_duration)),
+							.add(new Seance(new Movie(title, new Time(hours_duration, minutes_duration), genre),
 									new Time(hours_begin, minutes_begin)));
+					sound_cinema.playSound_03();
 				} else if ((hours_begin * 60
 						+ minutes_begin) > (entry.getValue().getSchedule().iterator().next().getEndTime().getHours()
 								* 60 + entry.getValue().getSchedule().iterator().next().getEndTime().getMinutes())
@@ -60,10 +65,12 @@ public class Cinema {
 														.getMinutes()))) {
 					System.out.println("Added!");
 					entry.getValue().getSchedule()
-							.add(new Seance(new Movie(title, new Time(hours_duration, minutes_duration)),
+							.add(new Seance(new Movie(title, new Time(hours_duration, minutes_duration), genre),
 									new Time(hours_begin, minutes_begin)));
+					sound_cinema.playSound_02();
 				} else {
 					System.out.println("Time!");
+					sound_cinema.playSound_01();
 				}
 			}
 		}
@@ -80,6 +87,7 @@ public class Cinema {
 		int hours_begin = Main.scanner.nextInt();
 		System.out.println("Please enter time of begining (minutes).");
 		int minutes_begin = Main.scanner.nextInt();
+		String genre = my_genre.getGenre();
 		while (iterator.hasNext()) {
 			Entry<Days, Schedule> entry = iterator.next();
 			if ((hours_begin * 60 + minutes_begin < open.getHours() * 60 + open.getMinutes()) & (work)) {
@@ -92,7 +100,7 @@ public class Cinema {
 				work = false;
 			} else if (entry.getValue().getSchedule().isEmpty()) {
 				entry.getValue().getSchedule()
-						.add(new Seance(new Movie(title, new Time(hours_duration, minutes_duration)),
+						.add(new Seance(new Movie(title, new Time(hours_duration, minutes_duration), genre),
 								new Time(hours_begin, minutes_begin)));
 			} else if ((hours_begin * 60
 					+ minutes_begin) > (entry.getValue().getSchedule().iterator().next().getEndTime().getHours() * 60
@@ -106,10 +114,11 @@ public class Cinema {
 													.getMinutes()))) {
 				System.out.println("Added!");
 				entry.getValue().getSchedule()
-						.add(new Seance(new Movie(title, new Time(hours_duration, minutes_duration)),
+						.add(new Seance(new Movie(title, new Time(hours_duration, minutes_duration), genre),
 								new Time(hours_begin, minutes_begin)));
 			} else if (work) {
 				System.out.println("Time!" + entry.getKey());
+
 			}
 			// work = false;
 
@@ -159,9 +168,9 @@ public class Cinema {
 	}
 
 	public void show_week_schedule() {
-		 for (Map.Entry<Days, Schedule> entry : map.entrySet()) {
-		 System.out.println(entry.toString());
-		 }
+		for (Map.Entry<Days, Schedule> entry : map.entrySet()) {
+			System.out.println(entry.toString());
+		}
 	}
 
 	public Cinema(Time open, Time closed) {
