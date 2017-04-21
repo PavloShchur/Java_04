@@ -55,7 +55,7 @@ public class Cinema {
 				} else if ((hours_begin * 60
 						+ minutes_begin) > (entry.getValue().getSchedule().iterator().next().getEndTime().getHours()
 								* 60 + entry.getValue().getSchedule().iterator().next().getEndTime().getMinutes())
-						|| ((hours_begin * 60 + minutes_begin
+						&& ((hours_begin * 60 + minutes_begin
 								+ entry.getValue().getSchedule().iterator().next().getMovie().getDuration().getHours()
 										* 60
 								+ entry.getValue().getSchedule().iterator().next().getMovie().getDuration()
