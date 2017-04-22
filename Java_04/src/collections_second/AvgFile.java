@@ -12,15 +12,15 @@ public class AvgFile {
 		double sum = 0.0;
 
 		FileWriter fout = new FileWriter("test.txt");
-		fout.write("2, 3.4, 5, 6, 7.4, 9.1, 10.5, good");
+		fout.write("2, 3.4, 5, 6, 7.4, 9.1, 10.2, good");
 		fout.close();
 
-		FileReader fin = new FileReader("Test.txt");
+		FileReader fin = new FileReader("test.txt");
 		
 		try (Scanner src = new Scanner(fin)) {
 			src.useDelimiter(", *");
 			while (src.hasNext()) {
-				if (src.hasNextBoolean()) {
+				if (src.hasNextDouble()) {
 					sum += src.nextDouble();
 					count++;
 				} else {

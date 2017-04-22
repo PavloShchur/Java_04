@@ -11,13 +11,14 @@ public class ATM {
 	static short Another_Balance = 10000;
 	static short Pin = 1234;
 	static Scanner src = new Scanner(System.in);
+	
+	int count = 0;
 
 	public static void main(String[] args) {
 		ATM atm = new ATM();
 		boolean work = true;
 		atm.pin();
 		while (work) {
-			atm.menu();
 			String choice = src.next();
 			switch (choice) {
 			case "1":
@@ -55,8 +56,12 @@ public class ATM {
 		System.out.println("Please enter Your pin.");
 		int user_pin = src.nextInt();
 		if (Pin == user_pin) {
+			menu();
+		} else if (count < 4) {
+			count++;
+			pin();
 		} else {
-			System.out.println("Please write a correct pin");
+			System.out.println("EXIT");
 			return;
 		}
 	}
