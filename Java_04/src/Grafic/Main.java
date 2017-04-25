@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -20,8 +22,9 @@ public class Main {
 
 		Elements elements2 = document.select("table.wikitable > tbody");
 		List<Country> countries = new ArrayList<Country>();
+		int N = Integer.parseInt(JOptionPane.showInputDialog("Enter number of countries:"));
 		for (org.jsoup.nodes.Element element : elements2) {
-			for (short i = 1; i <= 7; i++) {
+			for (short i = 1; i <= N; i++) {
 				Collections.shuffle(countries);
 				countries.add(new Country(
 						element.getElementsByTag("tr").get(i).getElementsByTag("td").get(1).text()
