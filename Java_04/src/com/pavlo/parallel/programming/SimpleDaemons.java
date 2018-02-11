@@ -2,7 +2,7 @@ package com.pavlo.parallel.programming;
 
 import java.util.concurrent.TimeUnit;
 
-import com.pavlo.Regular_Expressions.Main;
+import com.pavlo.regular_expressions.Main;
 
 public class SimpleDaemons implements Runnable {
 

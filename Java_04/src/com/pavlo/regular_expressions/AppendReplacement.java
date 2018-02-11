@@ -1,4 +1,4 @@
-package com.pavlo.Regular_Expressions;
+package com.pavlo.regular_expressions;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
